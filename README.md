@@ -7,6 +7,8 @@ Machine Learning/Deep Learning models using `Flask`.
 * Python3.x
 * Unix
 * Flask
+* Apache
+* WSGI
 
 
  
