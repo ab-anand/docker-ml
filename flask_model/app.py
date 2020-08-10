@@ -4,7 +4,7 @@ import numpy as np
 import pandas as pd
 from flasgger import Swagger
 
-with open("./rf.pkl", "rb") as model_pkl:
+with open("/var/www/flask_model/rf.pkl", "rb") as model_pkl:
     model = pickle.load(model_pkl)
 
 app = Flask(__name__)

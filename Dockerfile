@@ -1,7 +1,18 @@
 FROM continuumio/anaconda3:4.4.0
 MAINTAINER abhinavanand1905@gmail.com
-COPY ./flask_model /usr/local/python
-EXPOSE 5000
-WORKDIR /usr/local/python
+EXPOSE 8000
+RUN apt-get update && apt-get install -y apache2 \
+    apache2-dev \
+    vim \
+    && apt-get clean \
+    && apt-get autoremove \
+    && rm -rf /var/lib/apt/lists/*
+WORKDIR /var/www/flask_model/
+COPY ./app.wsgi /var/www/flask_model/app.wsgi
+COPY ./flask_model /var/www/flask_model/
 RUN pip install -r requirements.txt
-CMD python app.py
+RUN /opt/conda/bin/mod_wsgi-express install-module
+RUN mod_wsgi-express setup-server app.wsgi --port=8000 \
+    --user www-data --group www-data \
+    --server-root=/etc/mod_wsgi-express-80
+CMD /etc/mod_wsgi-express-80/apachectl start -D FOREGROUND
